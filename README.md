@@ -15,7 +15,10 @@ This repository contains several projects.
 This project is source of C# library for Line Messaging API. You can install via NuGet, or use Visual Studio 2015 template.
 
 ## LineBotApplication 
-This project is source of Visual Studio 2015 Project Template. You can download template zip from [release](https://github.com/kenakamu/line-bot-sdk-csharp/releases)
+This project is source of Visual Studio 2015 Project Template. You can download template zip from [release](https://github.com/kenakamu/line-bot-sdk-csharp/releases/tag/LineBotApplication)
+
+## LineWithBotFrameworkApplication 
+This project is sour ceof Visual Studio 2015 Project Template which connect Line Web Messaging API to Microsoft Bot Framework via DirectLine. You can download template zip from [release](https://github.com/kenakamu/line-bot-sdk-csharp/releases/tag/LineWithBotFrameworkApplication)
 
 # License
 MIT license.
