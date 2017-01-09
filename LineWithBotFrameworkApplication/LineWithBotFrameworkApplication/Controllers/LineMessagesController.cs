@@ -16,6 +16,7 @@ using System.Threading.Tasks;
 using System.Web.Http;
 using dl = Microsoft.Bot.Connector.DirectLine.Models;
 using lm = LineMessagingAPISDK.Models;
+using $safeprojectname$.Services;
 
 namespace $safeprojectname$.Controllers
 {
@@ -416,8 +417,8 @@ namespace $safeprojectname$.Controllers
                                         }
                                     }
 
-                                    tColumn.ThumbnailImageUrl = hcard.Images.First().Url;
-                                    tColumn.Text = hcard.Subtitle;
+                                    tColumn.ThumbnailImageUrl = string.IsNullOrEmpty(hcard.Images.First().Url) ? null : hcard.Images.First().Url;
+                                tColumn.Text = hcard.Subtitle;
                                     tColumn.Title = hcard.Title;
 
                                     carouselTemplate.Columns.Add(tColumn);
@@ -448,16 +449,6 @@ namespace $safeprojectname$.Controllers
 
                 await Reply(replyMessage);
             }
-        }
-    }
-
-    public static class CacheService
-    {
-        public static Dictionary<string, object> caches;
-
-        static CacheService()
-        {
-            caches = new Dictionary<string, object>();
         }
     }
 }

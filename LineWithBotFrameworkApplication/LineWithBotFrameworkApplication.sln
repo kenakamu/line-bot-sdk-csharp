@@ -3,7 +3,7 @@ Microsoft Visual Studio Solution File, Format Version 12.00
 # Visual Studio 14
 VisualStudioVersion = 14.0.25420.1
 MinimumVisualStudioVersion = 10.0.40219.1
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Line with BotFramework Application", "Line with BotFramework Application\Line with BotFramework Application.csproj", "{931620E0-810D-42E7-8FD9-DAB87E0204E9}"
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "LineWithBotFrameworkApplication", "LineWithBotFrameworkApplication\LineWithBotFrameworkApplication.csproj", "{931620E0-810D-42E7-8FD9-DAB87E0204E9}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
