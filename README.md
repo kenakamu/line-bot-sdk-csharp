@@ -6,8 +6,7 @@ About the LINE Messaging API
 
 See the official API documentation for more information.
 
-English: https://devdocs.line.me/en/
-
+English: https://devdocs.line.me/en/ <br/>
 Japanese: https://devdocs.line.me/ja/
 
 ##Install
@@ -15,8 +14,7 @@ You can install package from Nuget.
 > Install-Package LineMessagingAPI.CSharp
 
 ## Visual Studio Template
-This repository contains Visual Studio template which includes the library.
-
+This repository contains Visual Studio template which includes the library.<br/>
 You can download from https://github.com/kenakamu/line-bot-sdk-csharp/releases
 
 1. Download Line Bot Application.zip save the zip file to your Visual Studio 2015 templates directory which is traditionally in "%USERPROFILE%\Documents\Visual Studio 2015\Templates\ProjectTemplates\Visual C#\"
@@ -26,8 +24,7 @@ You can download from https://github.com/kenakamu/line-bot-sdk-csharp/releases
 # Template features
 This templates does followings.
 ### Varidate Signature
-When receiving Post message from Line Platform, it verifies the request by following the documentation at 
-
+When receiving Post message from Line Platform, it verifies the request by following the documentation at <br/> 
 https://devdocs.line.me/en/#signature-validation
 
 ### Parse and handle Incoming message
@@ -39,8 +36,7 @@ Several types such as Text, Location or Media type of message already has sample
 ### Reply/Push message
 Finally, it replies to Line Platform by using either reply or push. Find detail information here.
 
-Reply Message: https://devdocs.line.me/en/#reply-message
-
+Reply Message: https://devdocs.line.me/en/#reply-message <br/>
 Push Message: https://devdocs.line.me/en/#push-message
 
 # Create Replymessage
