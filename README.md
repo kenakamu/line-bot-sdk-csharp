@@ -16,6 +16,7 @@ You can install package from Nuget.
 
 ## Visual Studio Template
 This repository contains Visual Studio template which includes the library.
+
 You can download from https://github.com/kenakamu/line-bot-sdk-csharp/releases
 
 1. Download Line Bot Application.zip save the zip file to your Visual Studio 2015 templates directory which is traditionally in "%USERPROFILE%\Documents\Visual Studio 2015\Templates\ProjectTemplates\Visual C#\"
@@ -25,7 +26,9 @@ You can download from https://github.com/kenakamu/line-bot-sdk-csharp/releases
 # Template features
 This templates does followings.
 ### Varidate Signature
-When receiving Post message from Line Platform, it verifies the request by following the documentation at https://devdocs.line.me/en/#signature-validation
+When receiving Post message from Line Platform, it verifies the request by following the documentation at 
+
+https://devdocs.line.me/en/#signature-validation
 
 ### Parse and handle Incoming message
 Parse the incoming Post body and handle each type.
@@ -35,11 +38,14 @@ Several types such as Text, Location or Media type of message already has sample
 
 ### Reply/Push message
 Finally, it replies to Line Platform by using either reply or push. Find detail information here.
+
 Reply Message: https://devdocs.line.me/en/#reply-message
+
 Push Message: https://devdocs.line.me/en/#push-message
 
 # Create Replymessage
 Following examples demonstrate how to construct reply message.
+
 #### Text Reply
 ```csharp 
 var replyMessage = new TextMessage(textMessage.Text);
