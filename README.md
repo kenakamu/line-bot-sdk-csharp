@@ -10,3 +10,10 @@ English: https://devdocs.line.me/en/
 
 Japanese: https://devdocs.line.me/ja/
 
+##Install
+You can install package from Nuget.
+> Install-Package LineMessagingAPI.CSharp
+
+## Visual Studio Template
+This repository contains Visual Studio template which includes the library, which you can download from release.
+Use the template to jump start implementing LINE BOT.
