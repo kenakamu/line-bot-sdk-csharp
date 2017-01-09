@@ -153,7 +153,7 @@ namespace $safeprojectname$.Controllers
                 actions.Add(new MessageTemplateAction("Yes", "yes"));
                 actions.Add(new MessageTemplateAction("No", "no"));
                 ConfirmTemplate confirmTemplate = new ConfirmTemplate("Confirm Test", actions);
-                replyMessage = new TemplateMessage("Buttons", confirmTemplate);
+                replyMessage = new TemplateMessage("Confirm", confirmTemplate);
             }
             else if (textMessage.Text.ToLower() == "carousel")
             {
@@ -165,7 +165,7 @@ namespace $safeprojectname$.Controllers
                 columns.Add(new TemplateColumn() { Title = "Casousel 1 Title", Text = "Casousel 1 Text", ThumbnailImageUrl = "https://github.com/apple-touch-icon.png", Actions = actions });
                 columns.Add(new TemplateColumn() { Title = "Casousel 2 Title", Text = "Casousel 2 Text", ThumbnailImageUrl = "https://github.com/apple-touch-icon.png", Actions = actions });
                 CarouselTemplate carouselTemplate = new CarouselTemplate(columns);
-                replyMessage = new TemplateMessage("Buttons", carouselTemplate);
+                replyMessage = new TemplateMessage("Carousel", carouselTemplate);
             }
             else
             {
