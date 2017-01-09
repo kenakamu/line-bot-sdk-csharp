@@ -77,12 +77,12 @@ namespace LineMessagingAPISDK
                     return;
                 else
                     throw new Exception(await result.Content.ReadAsStringAsync());
-                //200 OK リクエスト成功
-                //400 Bad Request リクエストに問題があります。リクエストパラメータやJSONのフォーマットを確認してください。 
-                //401 Unauthorized Authorizationヘッダを正しく送信していることを確認してください。 
-                //403 Forbidden APIの利用権限がありません。ご契約中のプランやアカウントに付与された権限を確認してください。 
-                //429 Too Many Requests アクセス頻度を制限内に抑えてください。 
-                //500 Internal Server Error
+                //200 OK Request successful
+                //400 Bad Request Problem with the request
+                //401 Unauthorized Valid Channel access token is not specified
+                //403 Forbidden Not authorized to use the API.Confirm that your account or plan is authorized to used the API. 
+                //429 Too Many Requests Exceeded the rate limit for API calls
+                //500 Internal Server Error Error on the internal server
             }
         }
 
