@@ -1,4 +1,4 @@
-# line-bot-sdk-csharp
+# LineMessagingAPISDK 
 SDK of the LINE Messaging API for C#.
 
 About the LINE Messaging API
