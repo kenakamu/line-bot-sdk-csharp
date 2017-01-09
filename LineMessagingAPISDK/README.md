@@ -14,7 +14,7 @@ You can install package from Nuget.
 > Install-Package LineMessagingAPI.CSharp
 
 You can also use Visual Studio 2015 Template for jump start. <br/>
-See [here](https://github.com/kenakamu/line-bot-sdk-csharp/tree/master/LineBotApplication for more detail.) for more detail.
+See [here](https://github.com/kenakamu/line-bot-sdk-csharp/tree/master/LineBotApplication) for more detail.
 
 # LineClient
 LineClient class is the main proxy class.
