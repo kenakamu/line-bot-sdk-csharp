@@ -5,7 +5,7 @@ using System.Web;
 using System.Web.Http;
 using System.Web.Routing;
 
-namespace $safeprojectname$
+namespace Line_with_BotFramework_Application
 {
     public class WebApiApplication : System.Web.HttpApplication
     {

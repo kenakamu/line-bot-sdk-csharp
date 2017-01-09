@@ -3,7 +3,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Web.Http;
 
-namespace $safeprojectname$
+namespace Line_with_BotFramework_Application
 {
     public static class WebApiConfig
     {
