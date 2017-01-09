@@ -22,7 +22,7 @@ You can download from https://github.com/kenakamu/line-bot-sdk-csharp/releases
 2. Open Visual Studio 2015Create a new C# project using the new Line Bot Application template. 
 3. Update ChannelSecret and ChannelToken in Web.Config file. You can get there values from https://business.line.me
 
-## Template features
+# Template features
 This templates does followings.
 ### Varidate Signature
 When receiving Post message from Line Platform, it verifies the request by following the documentation at https://devdocs.line.me/en/#signature-validation
@@ -38,7 +38,8 @@ Finally, it replies to Line Platform by using either reply or push. Find detail 
 Reply Message: https://devdocs.line.me/en/#reply-message
 Push Message: https://devdocs.line.me/en/#push-message
 
-## Create Replymessage
+# Create Replymessage
+Following examples demonstrate how to construct reply message.
 #### Text Reply
 ```csharp 
 var replyMessage = new TextMessage(textMessage.Text);
