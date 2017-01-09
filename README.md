@@ -55,7 +55,7 @@ var replyMessage = new AudioMessage("pass to mp4 file", 3600);
 ```
 
 #### Video Reply
-```csharpvar
+```csharp
 var replyMessage = new VideoMessage("pass to video", "pass to video thumbnail");
 ```
 
