@@ -37,3 +37,9 @@ Finally, it replies to Line Platform by using either reply or push. Find detail 
 
 Reply Message: https://devdocs.line.me/en/#reply-message <br/>
 Push Message: https://devdocs.line.me/en/#push-message
+
+### 日本語の記事 ###
+以下記事に使い方の例が非常にわかりやすく掲載されていますので、是非ご覧ください。
+LUISを使って頭の悪いLINE Botを作ってみよう！
+http://www.atmarkit.co.jp/ait/articles/1702/03/news026.html
+
