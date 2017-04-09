@@ -126,3 +126,12 @@ CarouselTemplate carouselTemplate = new CarouselTemplate(columns);       
 replyMessage = new TemplateMessage("Carousel", carouselTemplate);
 ```
 
+#### Release Note
+v1.2
+  - Support Multicast
+  - Add more comments
+  - Bug fixes
+v1.1 
+  - Fix download content bug
+v1.0
+  - Initial Release
