@@ -1,11 +1,22 @@
 ﻿using Newtonsoft.Json;
 using Newtonsoft.Json.Converters;
 using System;
+using System.ComponentModel.DataAnnotations;
+using System.Text.RegularExpressions;
 
 namespace LineMessagingAPISDK.Models
 {
     public class AudioMessage : Message
-    {
+    {       
+        /// <summary>
+        /// URL of audio file (Max: 1000 characters)
+        /// HTTPS
+        /// m4a
+        /// Less than 1 minute
+        /// Max 10 MB
+        /// </summary>
+        [StringLength(1000, ErrorMessage = "Max: 1000 characters")]
+        [RegularExpression("^https://.*(jpg|jpeg)$", ErrorMessage = "Require HTTPS and jpeg")]
         [JsonProperty("originalContentUrl")]
         public string OriginalContentUrl { get; set; }
 

@@ -1,6 +1,7 @@
 ﻿using Newtonsoft.Json;
 using Newtonsoft.Json.Converters;
 using System;
+using System.Collections.Generic;
 
 namespace LineMessagingAPISDK.Models
 {
@@ -42,6 +43,19 @@ namespace LineMessagingAPISDK.Models
             return replyMessage;
         }
 
+        public ReplyMessage CreateReply(string text = null, List<Message> messages = null)
+        {
+            ReplyMessage replyMessage = new ReplyMessage();
+
+            replyMessage.ReplyToken = this.ReplyToken;
+
+            if (!string.IsNullOrEmpty(text))
+                replyMessage.Messages.Add(new TextMessage(text));
+            if (messages != null)
+                replyMessage.Messages.AddRange(messages);
+            return replyMessage;
+        }
+
         public PushMessage CreatePush(string text = null, Message message = null)
         {
             PushMessage pushMessage = new PushMessage();
@@ -52,6 +66,19 @@ namespace LineMessagingAPISDK.Models
                 pushMessage.Messages.Add(new TextMessage(text));
             if (message != null)
                 pushMessage.Messages.Add(message);
+            return pushMessage;
+        }
+
+        public PushMessage CreatePush(string text = null, List<Message> messages = null)
+        {
+            PushMessage pushMessage = new PushMessage();
+
+            pushMessage.To = this.Source.UserId ?? this.Source.GroupId ?? this.Source.RoomId;
+
+            if (!string.IsNullOrEmpty(text))
+                pushMessage.Messages.Add(new TextMessage(text));
+            if (messages != null)
+                pushMessage.Messages.AddRange(messages);
             return pushMessage;
         }
     }

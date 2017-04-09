@@ -4,6 +4,9 @@ using System.Collections.Generic;
 
 namespace LineMessagingAPISDK.Models
 {
+    /// <summary>
+    /// Send messages to a user, group, or room at any time.
+    /// </summary>
     public class PushMessage
     {
         [JsonProperty("to")]

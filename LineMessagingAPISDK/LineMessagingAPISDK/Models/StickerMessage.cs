@@ -4,6 +4,9 @@ using System;
 
 namespace LineMessagingAPISDK.Models
 {
+    /// <summary>
+    /// For a list of the sticker IDs for stickers that can be sent with the Messaging API, see Sticker list.
+    /// </summary>
     public class StickerMessage : Message
     {
         [JsonProperty("packageId")]

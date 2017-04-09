@@ -46,6 +46,7 @@
     <Compile Include="Models\ImageMessage.cs" />
     <Compile Include="Models\LocationMessage.cs" />
     <Compile Include="Models\Media.cs" />
+    <Compile Include="Models\MulticastMessage.cs" />
     <Compile Include="Models\Message.cs" />
     <Compile Include="Models\MessageTemplateAction.cs" />
     <Compile Include="Models\Postback.cs" />
@@ -63,11 +64,11 @@
     <Compile Include="Models\UriTemplateAction.cs" />
     <Compile Include="Models\VideoMessage.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
+    <Compile Include="Validators\ItemCountsAttribute.cs" />
   </ItemGroup>
   <ItemGroup>
-    <Reference Include="Newtonsoft.Json, Version=9.0.0.0, Culture=neutral, PublicKeyToken=30ad4fe6b2a6aeed, processorArchitecture=MSIL">
-      <HintPath>..\packages\Newtonsoft.Json.9.0.1\lib\portable-net45+wp80+win8+wpa81\Newtonsoft.Json.dll</HintPath>
-      <Private>True</Private>
+    <Reference Include="Newtonsoft.Json, Version=10.0.0.0, Culture=neutral, PublicKeyToken=30ad4fe6b2a6aeed, processorArchitecture=MSIL">
+      <HintPath>..\..\LineWithBotFrameworkApplication\packages\Newtonsoft.Json.10.0.2\lib\portable-net45+win8+wpa81+wp8\Newtonsoft.Json.dll</HintPath>
     </Reference>
   </ItemGroup>
   <ItemGroup>
