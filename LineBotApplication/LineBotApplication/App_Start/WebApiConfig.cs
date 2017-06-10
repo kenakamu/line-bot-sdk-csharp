@@ -15,6 +15,12 @@ namespace $safeprojectname$
             config.MapHttpAttributeRoutes();
 
             config.Routes.MapHttpRoute(
+                name: "ImagesController",
+                routeTemplate: "images/{file}/{size}",
+                 defaults: new { controller = "Images", size = 1040 }
+            );
+
+            config.Routes.MapHttpRoute(
                 name: "DefaultApi",
                 routeTemplate: "api/{controller}/{id}",
                 defaults: new { id = RouteParameter.Optional }

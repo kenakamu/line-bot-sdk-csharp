@@ -64,7 +64,7 @@ namespace LineMessagingAPISDK.Models
         [JsonProperty("actions")]
         public List<TemplateAction> Actions { get; set; }
 
-        public ButtonsTemplate(string thumbnailImageUrl= null, string title = null, string text = "", List<TemplateAction> actions = null)
+        public ButtonsTemplate(string thumbnailImageUrl= null, string title = null, string text = null, List<TemplateAction> actions = null)
         {
             Type = TemplateType.Buttons;
             this.ThumbnailImageUrl = thumbnailImageUrl;

@@ -275,7 +275,9 @@ namespace $safeprojectname$.Controllers
                 }
                 catch (Exception ex)
                 {
-                    // Error when reply/push failed.
+#if DEBUG
+                    await lineClient.PushAsync(lineEvent.CreatePush(ex.Message, message:null));
+#endif
                 }
             }
         }
@@ -347,7 +349,7 @@ namespace $safeprojectname$.Controllers
                             ButtonsTemplate buttonsTemplate = new ButtonsTemplate(
                                 hcard.Images?.First().Url.Replace("http://","https://"),
                                 hcard.Subtitle == null ? null : hcard.Title, 
-                                hcard.Subtitle ?? hcard.Text);
+                                string.IsNullOrEmpty(hcard.Subtitle) ? hcard.Text : hcard.Subtitle);
 
                             if (hcard.Buttons != null)
                             {
@@ -430,7 +432,7 @@ namespace $safeprojectname$.Controllers
                         else if (attachment.ContentType.Contains("image"))
                         {
                             var originalContentUrl = attachment.ContentUrl?.Replace("http://", "https://");
-                            var previewImageUrl = attachment.ThumbnailUrl?.Replace("http://", "https://");
+                            var previewImageUrl = string.IsNullOrEmpty(attachment.ThumbnailUrl) ? attachment.ContentUrl?.Replace("http://", "https://") : attachment.ThumbnailUrl?.Replace("http://", "https://");
                          
                             messages.Add(new ImageMessage(originalContentUrl, previewImageUrl));
                         }
@@ -471,7 +473,7 @@ namespace $safeprojectname$.Controllers
                         TemplateColumn tColumn = new TemplateColumn(
                             hcard.Images.FirstOrDefault()?.Url?.Replace("http://", "https://"),
                             hcard.Subtitle == null ? null : hcard.Title,
-                            hcard.Subtitle ?? hcard.Title);
+                            string.IsNullOrEmpty(hcard.Subtitle) ? hcard.Title : hcard.Subtitle);
 
                         if (hcard.Buttons != null)
                         {

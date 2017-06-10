@@ -109,6 +109,11 @@ namespace LineMessagingAPISDK
         /// <param name="messages"> Messages Max: 5 </param>
         public async Task MulticastAsync(List<string> to, List<Message> messages)
         {
+            if (to.Count > 150)
+                throw new Exception("Max: 150 users");
+            if (messages.Count > 5)
+                throw new Exception("Max: 5 Messages");
+
             using (HttpClient client = GetClient())
             {
                 JsonSerializerSettings settings = new JsonSerializerSettings()

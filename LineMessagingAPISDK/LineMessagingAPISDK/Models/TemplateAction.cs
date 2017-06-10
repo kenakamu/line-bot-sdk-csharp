@@ -3,8 +3,6 @@ using System;
 
 namespace LineMessagingAPISDK.Models
 {
-    public enum TemplateActionType { Postback, Uri, Message }
-
     /// <summary>
     /// Action to include in your template message.
     /// </summary>

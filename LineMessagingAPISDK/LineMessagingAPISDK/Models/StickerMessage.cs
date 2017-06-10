@@ -1,11 +1,9 @@
 ﻿using Newtonsoft.Json;
-using Newtonsoft.Json.Converters;
-using System;
 
 namespace LineMessagingAPISDK.Models
 {
     /// <summary>
-    /// For a list of the sticker IDs for stickers that can be sent with the Messaging API, see Sticker list.
+    /// For a list of the sticker IDs for stickers that can be sent with the Messaging API, see Sticker list. https://devdocs.line.me/files/sticker_list.pdf
     /// </summary>
     public class StickerMessage : Message
     {

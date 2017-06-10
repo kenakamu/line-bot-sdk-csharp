@@ -1,9 +1,10 @@
 ﻿using Newtonsoft.Json;
-using Newtonsoft.Json.Converters;
-using System;
 
 namespace LineMessagingAPISDK.Models
 {
+    /// <summary>
+    /// Message object which contains the text sent from the source or send to user.
+    /// </summary>
     public class TextMessage : Message
     {
         private string text;

@@ -1,6 +1,4 @@
 ﻿using Newtonsoft.Json;
-using Newtonsoft.Json.Converters;
-using System;
 
 namespace LineMessagingAPISDK.Models
 {
@@ -10,6 +8,7 @@ namespace LineMessagingAPISDK.Models
     public class TemplateMessage : Message
     {
         private string altText;
+
         /// <summary>
         /// Alternative text
         /// Max: 400 characters
@@ -21,10 +20,13 @@ namespace LineMessagingAPISDK.Models
             set { altText = value?.Length > 400 ? value.Substring(0, 400) : value; }
         }
 
+        /// <summary>
+        /// Object with the contents of the template.
+        /// </summary>
         [JsonProperty("template")]
         public Template Template { get; set; }
 
-        public TemplateMessage(string altText, Template template = null)
+        public TemplateMessage(string altText, Template template)
         {
             Type = MessageType.Template;
             this.AltText = altText;

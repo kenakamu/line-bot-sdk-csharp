@@ -1,6 +1,5 @@
 ﻿using LineMessagingAPISDK.Validators;
 using Newtonsoft.Json;
-using System;
 using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations;
 
@@ -63,9 +62,9 @@ namespace LineMessagingAPISDK.Models
         [ItemCounts(3, ErrorMessage = "You can store up to 3 actions")]
         [JsonProperty("actions")]
         public List<TemplateAction> Actions { get; set; } = new List<TemplateAction>();
-
-        public TemplateColumn(string thumbnailImageUrl = null, string title = null, string text = "", List<TemplateAction> actions = null)
-        {            
+        
+        public TemplateColumn(string thumbnailImageUrl = null, string title = null, string text = null, List<TemplateAction> actions = null)
+        {
             this.ThumbnailImageUrl = thumbnailImageUrl;
             this.Title = title;
             this.Text = text;

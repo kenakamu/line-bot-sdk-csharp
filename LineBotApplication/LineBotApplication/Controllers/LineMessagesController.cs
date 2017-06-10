@@ -10,6 +10,7 @@ using System.Net.Http;
 using System.Security.Cryptography;
 using System.Text;
 using System.Threading.Tasks;
+using System.Web;
 using System.Web.Http;
 
 namespace $safeprojectname$.Controllers
@@ -166,6 +167,15 @@ namespace $safeprojectname$.Controllers
                 columns.Add(new TemplateColumn() { Title = "Casousel 2 Title", Text = "Casousel 2 Text", ThumbnailImageUrl = "https://github.com/apple-touch-icon.png", Actions = actions });
                 CarouselTemplate carouselTemplate = new CarouselTemplate(columns);
                 replyMessage = new TemplateMessage("Carousel", carouselTemplate);
+            }
+            else if (textMessage.Text.ToLower() == "imagemap")
+            {
+                var url = HttpContext.Current.Request.Url;
+                var imageUrl = $"{url.Scheme}://{url.Host}:{url.Port}/images/githubicon";
+                List<ImageMapAction> actions = new List<ImageMapAction>();
+                actions.Add(new UriImageMapAction("http://github.com", new ImageMapArea(0, 0, 520, 1040)));
+                actions.Add(new MessageImageMapAction("I love LINE!", new ImageMapArea(520, 0, 520, 1040)));
+                replyMessage = new ImageMapMessage(imageUrl, "GitHub", new BaseSize(1040, 1040), actions);
             }
             else
             {

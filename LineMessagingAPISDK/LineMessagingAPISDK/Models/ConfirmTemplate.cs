@@ -26,11 +26,11 @@ namespace LineMessagingAPISDK.Models
         [JsonProperty("actions")]
         public List<TemplateAction> Actions { get; set; }
 
-        public ConfirmTemplate(string text = "", List<TemplateAction> actions = null)
+        public ConfirmTemplate(string text = null, List<TemplateAction> actions = null)
         {
             Type = TemplateType.Confirm;           
             this.Text = text;
-            this.Actions = actions;
+            this.Actions = actions ?? new List<TemplateAction>();
         }
     }
 }

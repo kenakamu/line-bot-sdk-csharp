@@ -1,12 +1,8 @@
 ﻿using Newtonsoft.Json;
-using Newtonsoft.Json.Converters;
-using System;
 using System.Collections.Generic;
 
 namespace LineMessagingAPISDK.Models
-{
-    public enum EventType { Beacon, Message, Follow, Unfollow, Join, Leave, Postback }
-
+{    
     public class Event
     {
         [JsonProperty("replyToken")]
