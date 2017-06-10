@@ -157,7 +157,7 @@ namespace $safeprojectname$.Controllers
             {
                 Type = "message",
                 Text = lineEvent.Postback.Data,
-                From = new dl.ChannelAccount(lineEvent.Source.UserId)
+                From = new dl.ChannelAccount(lineEvent.Source.UserId, lineEvent.Source.UserId)
             };
 
             // Send the message, then fetch and reply messages,
@@ -182,7 +182,7 @@ namespace $safeprojectname$.Controllers
             {
                 Type = "message",
                 Text = textMessage.Text,
-                From = new dl.ChannelAccount(lineEvent.Source.UserId)
+                From = new dl.ChannelAccount(lineEvent.Source.UserId, lineEvent.Source.UserId)
             };
 
             // Send the message, then fetch and reply messages,
@@ -222,7 +222,7 @@ namespace $safeprojectname$.Controllers
             {
                 Type = "message",
                 Text = locationMessage.Title,
-                From = new dl.ChannelAccount(lineEvent.Source.UserId),
+                From = new dl.ChannelAccount(lineEvent.Source.UserId, lineEvent.Source.UserId),
                 Entities = new List<Entity>()
                 {
                     new Entity()
