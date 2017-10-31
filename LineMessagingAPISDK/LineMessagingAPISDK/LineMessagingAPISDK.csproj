@@ -39,6 +39,7 @@
     <Compile Include="Models\AudioMessage.cs" />
     <Compile Include="Models\BaseSize.cs" />
     <Compile Include="Models\Beacon.cs" />
+    <Compile Include="Models\DatetimePickerMode.cs" />
     <Compile Include="Models\BeaconType.cs" />
     <Compile Include="Models\ButtonsTemplate.cs" />
     <Compile Include="Models\ImageCarouselTemplate.cs" />
@@ -76,6 +77,7 @@
     <Compile Include="Models\TemplateType.cs" />
     <Compile Include="Models\TextMessage.cs" />
     <Compile Include="Models\UriImageMapAction.cs" />
+    <Compile Include="Models\DatetimePickerTemplateAction.cs" />
     <Compile Include="Models\UriTemplateAction.cs" />
     <Compile Include="Models\VideoMessage.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
