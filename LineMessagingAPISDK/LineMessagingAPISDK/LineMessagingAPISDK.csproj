@@ -41,6 +41,7 @@
     <Compile Include="Models\Beacon.cs" />
     <Compile Include="Models\BeaconType.cs" />
     <Compile Include="Models\ButtonsTemplate.cs" />
+    <Compile Include="Models\ImageCarouselTemplate.cs" />
     <Compile Include="Models\CarouselTemplate.cs" />
     <Compile Include="Models\ConfirmTemplate.cs" />
     <Compile Include="Models\Event.cs" />
@@ -69,6 +70,7 @@
     <Compile Include="Models\Template.cs" />
     <Compile Include="Models\TemplateAction.cs" />
     <Compile Include="Models\TemplateActionType.cs" />
+    <Compile Include="Models\ImageColumn.cs" />
     <Compile Include="Models\TemplateColumn.cs" />
     <Compile Include="Models\TemplateMessage.cs" />
     <Compile Include="Models\TemplateType.cs" />
