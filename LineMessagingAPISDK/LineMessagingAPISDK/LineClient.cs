@@ -21,6 +21,11 @@ namespace LineMessagingAPISDK
         const string contentEndpoint = "https://api.line.me/v2/bot/message/{0}/content";
         const string profileEndpoint = "https://api.line.me/v2/bot/profile/{0}";
         const string leaveEndpoint = "https://api.line.me/v2/bot/room/{0}/leave";
+        const string groupMemberProfileEndpoint = "https://api.line.me/v2/bot/group/{0}/member/{1}";
+        const string roomMemberProfileEndpoint = "https://api.line.me/v2/bot/room/{0}/member/{1}";
+        const string groupMemberIdsEndpoint = "https://api.line.me/v2/bot/group/{0}/members/ids?start={1}";
+        const string roomMemberIdsEndpoint = "https://api.line.me/v2/bot/room/{0}/members/ids?start={1}";
+        
         public string AccessToken;
 
         public LineClient(string accessToken)
@@ -213,6 +218,94 @@ namespace LineMessagingAPISDK
                 //403 Forbidden Not authorized to use the API.Confirm that your account or plan is authorized to used the API. 
                 //429 Too Many Requests Exceeded the rate limit for API calls
                 //500 Internal Server Error Error on the internal server
+            }
+        }
+
+        /// <summary>
+        /// https://developers.line.me/en/docs/messaging-api/reference/#get-group-member-profile
+        /// Get group member profile
+        /// </summary>
+        /// <param name="groupId">group id</param>
+        /// <param name="memberId">member id</param>
+        /// <returns></returns>
+        public async Task<Profile> GetGroupMemberProfile(string groupId, string memberId)
+        {
+            using (HttpClient client = GetClient())
+            {
+                var result = await client.GetAsync(string.Format(groupMemberProfileEndpoint, groupId, memberId));
+                if (!result.IsSuccessStatusCode)
+                    return null;
+                else
+                {
+                    Profile profile = JsonConvert.DeserializeObject<Profile>(await result.Content.ReadAsStringAsync());
+                    return profile;
+                }                
+            }
+        }
+
+        /// <summary>
+        /// https://developers.line.me/en/docs/messaging-api/reference/#get-room-member-profile
+        /// Get room member profile
+        /// </summary>
+        /// <param name="roomId">room id</param>
+        /// <param name="memberId">member id</param>
+        /// <returns></returns>
+        public async Task<Profile> GetRoomMemberProfile(string roomId, string memberId)
+        {
+            using (HttpClient client = GetClient())
+            {
+                var result = await client.GetAsync(string.Format(roomMemberProfileEndpoint, roomId, memberId));
+                if (!result.IsSuccessStatusCode)
+                    return null;
+                else
+                {
+                    Profile profile = JsonConvert.DeserializeObject<Profile>(await result.Content.ReadAsStringAsync());
+                    return profile;
+                }
+            }
+        }
+
+        /// <summary>
+        /// https://developers.line.me/en/docs/messaging-api/reference/#get-group-member-user-ids
+        /// Get group member user IDs
+        /// </summary>
+        /// <param name="groupId">group id</param>
+        /// <param name="start">continuationToken</param>
+        /// <returns></returns>
+        public async Task<MemberIdsResponse> GetGroupMemberIds(string groupId, string start = "")
+        {
+            using (HttpClient client = GetClient())
+            {
+                var result = await client.GetAsync(string.Format(groupMemberIdsEndpoint, groupId, start));
+                if (!result.IsSuccessStatusCode)
+                    return null;
+                else
+                {
+                    var groupMembersResponse = JsonConvert.DeserializeObject<MemberIdsResponse>(await result.Content.ReadAsStringAsync());
+                    return groupMembersResponse;
+                }
+            }
+        }
+
+        /// <summary>
+        /// https://developers.line.me/en/docs/messaging-api/reference/#get-room-member-user-ids
+        /// Get room member user IDs
+        /// </summary>
+        /// <param name="roomId">room id</param>
+        /// <param name="start">continuationToken</param>
+        /// <returns></returns>
+        public async Task<MemberIdsResponse> GetRoomMemberIds(string roomId, string start = "")
+        {
+            using (HttpClient client = GetClient())
+            {
+                var result = await client.GetAsync(string.Format(roomMemberIdsEndpoint, roomId, start));
+                if (!result.IsSuccessStatusCode)
+                    return null;
+                else
+                {
+                    var groupMembersResponse = JsonConvert.DeserializeObject<MemberIdsResponse>(await result.Content.ReadAsStringAsync());
+                    return groupMembersResponse;
+                }
             }
         }
 

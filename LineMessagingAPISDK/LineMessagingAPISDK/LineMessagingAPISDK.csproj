@@ -45,6 +45,7 @@
     <Compile Include="Models\ConfirmTemplate.cs" />
     <Compile Include="Models\Event.cs" />
     <Compile Include="Models\EventType.cs" />
+    <Compile Include="Models\MemberIdsResponse.cs" />
     <Compile Include="Models\ImageMapAction.cs" />
     <Compile Include="Models\ImageMapActionType.cs" />
     <Compile Include="Models\ImageMapArea.cs" />
