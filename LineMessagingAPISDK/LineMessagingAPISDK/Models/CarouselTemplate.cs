@@ -12,9 +12,9 @@ namespace LineMessagingAPISDK.Models
     {
         /// <summary>
         ///  Array of columns
-        ///  Max: 5 
+        ///  Max: 10 
         /// </summary>
-        [ItemCounts(5, ErrorMessage = "You can store up to 5 Columns")]
+        [ItemCounts(10, ErrorMessage = "You can store up to 10 Columns")]
         [JsonProperty("columns")]
         public List<TemplateColumn> Columns { get; set; }
 
