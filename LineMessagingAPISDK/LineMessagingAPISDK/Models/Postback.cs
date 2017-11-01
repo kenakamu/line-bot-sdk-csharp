@@ -11,6 +11,12 @@ namespace LineMessagingAPISDK.Models
         /// Postback data
         /// </summary>
         [JsonProperty("data")]
-        public string Data { get; set; }        
+        public string Data { get; set; }
+
+        /// <summary>
+        /// Object with the date and time selected by a user through a datetime picker action. The full-date, time-hour, and time-minute formats follow the RFC3339 protocol.
+        /// </summary>
+        [JsonProperty("params")]
+        public PostbackParams Params { get; set; }
     }
 }

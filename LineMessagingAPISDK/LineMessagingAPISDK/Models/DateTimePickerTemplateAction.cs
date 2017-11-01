@@ -54,7 +54,7 @@ namespace LineMessagingAPISDK.Models
                     throw new Exception("min must be less than the max value");
             }
 
-            Type = TemplateActionType.DatetimePicker;
+            Type = TemplateActionType.Datetimepicker;
             this.Label = label;
             this.Data = data;
             this.Mode = mode;

@@ -273,6 +273,7 @@ namespace LineMessagingAPISDK
         /// <summary>
         /// https://developers.line.me/en/docs/messaging-api/reference/#get-group-member-user-ids
         /// Get group member user IDs
+        /// This feature is only available for LINE@ Approved accounts or official accounts. 
         /// </summary>
         /// <param name="groupId">group id</param>
         /// <param name="start">continuationToken</param>
@@ -295,6 +296,7 @@ namespace LineMessagingAPISDK
         /// <summary>
         /// https://developers.line.me/en/docs/messaging-api/reference/#get-room-member-user-ids
         /// Get room member user IDs
+        /// This feature is only available for LINE@ Approved accounts or official accounts. 
         /// </summary>
         /// <param name="roomId">room id</param>
         /// <param name="start">continuationToken</param>
