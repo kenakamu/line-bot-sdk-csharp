@@ -21,7 +21,7 @@ namespace LineMessagingAPISDK.Models
 
         public ImageCarouselTemplate(List<ImageColumn> columns = null)
         {
-            Type = TemplateType.Image_Garousel;
+            Type = TemplateType.Image_carousel;
             Columns = columns ?? new List<ImageColumn>();
         }
     }
