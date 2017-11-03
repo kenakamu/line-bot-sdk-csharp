@@ -30,12 +30,27 @@ namespace LineMessagingAPISDK
         const string richMenuImageEndpoint = "https://api.line.me/v2/bot/richmenu/{0}/content";
         const string richMenuIdForUserEndpoint = "https://api.line.me/v2/bot/user/{0}/richmenu";
 
-
-        public string AccessToken;
+        static private HttpClient client;
+        static private JsonSerializerSettings settings;
 
         public LineClient(string accessToken)
         {
-            this.AccessToken = accessToken;
+            if (client == null)
+            {
+                client = new HttpClient();
+                client.DefaultRequestHeaders.Authorization = new AuthenticationHeaderValue("Bearer", accessToken);
+            }
+
+            if (settings == null)
+            {
+                settings = new JsonSerializerSettings()
+                {
+                    ContractResolver = new CamelCasePropertyNamesContractResolver(),
+                    NullValueHandling = NullValueHandling.Ignore
+                };
+
+                settings.Converters.Add(new StringEnumConverter(true));
+            }
         }
 
         /// <summary>
@@ -47,33 +62,21 @@ namespace LineMessagingAPISDK
         /// <param name="replyMessage"></param>
         public async Task ReplyToActivityAsync(ReplyMessage replyMessage)
         {
-            using (HttpClient client = GetClient())
-            {
-                JsonSerializerSettings settings = new JsonSerializerSettings()
-                {
-                    ContractResolver = new CamelCasePropertyNamesContractResolver(),
-                    NullValueHandling = NullValueHandling.Ignore
-                };
+            StringContent content = new StringContent(
+                JsonConvert.SerializeObject(replyMessage, settings),
+                Encoding.UTF8, "application/json");
+            var result = await client.PostAsync(replyEndpoint, content);
 
-                settings.Converters.Add(new StringEnumConverter(true));
-
-                StringContent content = new StringContent(
-                    JsonConvert.SerializeObject(replyMessage, settings),
-                    Encoding.UTF8, "application/json");
-                var result = await client.PostAsync(replyEndpoint, content);
-
-                if (result.IsSuccessStatusCode)
-                    return;
-                else
-                    throw new Exception(await result.Content.ReadAsStringAsync());
-                //200 OK Request successful
-                //400 Bad Request Problem with the request
-                //401 Unauthorized Valid Channel access token is not specified
-                //403 Forbidden Not authorized to use the API.Confirm that your account or plan is authorized to used the API. 
-                //429 Too Many Requests Exceeded the rate limit for API calls
-                //500 Internal Server Error Error on the internal server
-
-            }
+            if (result.IsSuccessStatusCode)
+                return;
+            else
+                throw new Exception(await result.Content.ReadAsStringAsync());
+            //200 OK Request successful
+            //400 Bad Request Problem with the request
+            //401 Unauthorized Valid Channel access token is not specified
+            //403 Forbidden Not authorized to use the API.Confirm that your account or plan is authorized to used the API. 
+            //429 Too Many Requests Exceeded the rate limit for API calls
+            //500 Internal Server Error Error on the internal server
         }
 
         /// <summary>
@@ -84,31 +87,20 @@ namespace LineMessagingAPISDK
         /// <param name="pushMessage"></param>
         public async Task PushAsync(PushMessage pushMessage)
         {
-            using (HttpClient client = GetClient())
-            {
-                JsonSerializerSettings settings = new JsonSerializerSettings()
-                {
-                    ContractResolver = new CamelCasePropertyNamesContractResolver(),
-                    NullValueHandling = NullValueHandling.Ignore
-                };
-
-                settings.Converters.Add(new StringEnumConverter(true));
-
-                StringContent content = new StringContent(
-                    JsonConvert.SerializeObject(pushMessage, settings),
-                    Encoding.UTF8, "application/json");
-                var result = await client.PostAsync(pushEndpoint, content);
-                if (result.IsSuccessStatusCode)
-                    return;
-                else
-                    throw new Exception(await result.Content.ReadAsStringAsync());
-                //200 OK Request successful
-                //400 Bad Request Problem with the request
-                //401 Unauthorized Valid Channel access token is not specified
-                //403 Forbidden Not authorized to use the API.Confirm that your account or plan is authorized to used the API. 
-                //429 Too Many Requests Exceeded the rate limit for API calls
-                //500 Internal Server Error Error on the internal server
-            }
+            StringContent content = new StringContent(
+                JsonConvert.SerializeObject(pushMessage, settings),
+                Encoding.UTF8, "application/json");
+            var result = await client.PostAsync(pushEndpoint, content);
+            if (result.IsSuccessStatusCode)
+                return;
+            else
+                throw new Exception(await result.Content.ReadAsStringAsync());
+            //200 OK Request successful
+            //400 Bad Request Problem with the request
+            //401 Unauthorized Valid Channel access token is not specified
+            //403 Forbidden Not authorized to use the API.Confirm that your account or plan is authorized to used the API. 
+            //429 Too Many Requests Exceeded the rate limit for API calls
+            //500 Internal Server Error Error on the internal server
         }
 
         /// <summary>
@@ -124,36 +116,26 @@ namespace LineMessagingAPISDK
             if (messages.Count > 5)
                 throw new Exception("Max: 5 Messages");
 
-            using (HttpClient client = GetClient())
+            MulticastMessage message = new MulticastMessage()
             {
-                JsonSerializerSettings settings = new JsonSerializerSettings()
-                {
-                    ContractResolver = new CamelCasePropertyNamesContractResolver(),
-                    NullValueHandling = NullValueHandling.Ignore
-                };
+                To = to,
+                Messages = messages
+            };
 
-                settings.Converters.Add(new StringEnumConverter(true));
-                MulticastMessage message = new MulticastMessage()
-                {
-                    To = to,
-                    Messages = messages
-                };
-
-                StringContent content = new StringContent(
-                    JsonConvert.SerializeObject(message, settings),
-                    Encoding.UTF8, "application/json");
-                var result = await client.PostAsync(multicastEndpoint, content);
-                if (result.IsSuccessStatusCode)
-                    return;
-                else
-                    throw new Exception(await result.Content.ReadAsStringAsync());
-                //200 OK Request successful
-                //400 Bad Request Problem with the request
-                //401 Unauthorized Valid Channel access token is not specified
-                //403 Forbidden Not authorized to use the API.Confirm that your account or plan is authorized to used the API. 
-                //429 Too Many Requests Exceeded the rate limit for API calls
-                //500 Internal Server Error Error on the internal server
-            }
+            StringContent content = new StringContent(
+                JsonConvert.SerializeObject(message, settings),
+                Encoding.UTF8, "application/json");
+            var result = await client.PostAsync(multicastEndpoint, content);
+            if (result.IsSuccessStatusCode)
+                return;
+            else
+                throw new Exception(await result.Content.ReadAsStringAsync());
+            //200 OK Request successful
+            //400 Bad Request Problem with the request
+            //401 Unauthorized Valid Channel access token is not specified
+            //403 Forbidden Not authorized to use the API.Confirm that your account or plan is authorized to used the API. 
+            //429 Too Many Requests Exceeded the rate limit for API calls
+            //500 Internal Server Error Error on the internal server
         }
 
         /// <summary>
@@ -164,23 +146,20 @@ namespace LineMessagingAPISDK
         /// <returns></returns>
         public async Task<Media> GetContent(string messageId)
         {
-            using (HttpClient client = GetClient())
+            var result = await client.GetAsync(string.Format(contentEndpoint, messageId));
+            if (result.IsSuccessStatusCode)
             {
-                var result = await client.GetAsync(string.Format(contentEndpoint, messageId));
-                if (result.IsSuccessStatusCode)
+                return new Media()
                 {
-                    return new Media()
-                    {
-                        Content = await result.Content.ReadAsStreamAsync(),
-                        ContentType = result.Content.Headers.ContentType.MediaType,
-                        FileName = result.Content.Headers.ContentDisposition != null ? 
-                        result.Content.Headers.ContentDisposition.FileName.Replace("\"", "") : 
-                        Guid.NewGuid().ToString()
-                    };
-                }
-                else
-                    return null;
+                    Content = await result.Content.ReadAsStreamAsync(),
+                    ContentType = result.Content.Headers.ContentType.MediaType,
+                    FileName = result.Content.Headers.ContentDisposition != null ?
+                    result.Content.Headers.ContentDisposition.FileName.Replace("\"", "") :
+                    Guid.NewGuid().ToString()
+                };
             }
+            else
+                return null;
         }
 
         /// <summary>
@@ -191,16 +170,13 @@ namespace LineMessagingAPISDK
         /// <returns></returns>
         public async Task<Profile> GetProfile(string mid)
         {
-            using (HttpClient client = GetClient())
-            {
-                var result = await client.GetAsync(string.Format(profileEndpoint, mid));
-                if (!result.IsSuccessStatusCode)
-                    return null;
+            var result = await client.GetAsync(string.Format(profileEndpoint, mid));
+            if (!result.IsSuccessStatusCode)
+                return null;
 
-                Profile profiles = JsonConvert.DeserializeObject<Profile>(await result.Content.ReadAsStringAsync());
+            Profile profiles = JsonConvert.DeserializeObject<Profile>(await result.Content.ReadAsStringAsync());
 
-                return profiles;
-            }
+            return profiles;
         }
 
         /// <summary>
@@ -210,20 +186,17 @@ namespace LineMessagingAPISDK
         /// <param name="id">group id or room id</param>
         public async Task Leave(string id)
         {
-            using (HttpClient client = GetClient())
-            {
-                var result = await client.GetAsync(string.Format(leaveEndpoint, id));
-                if (result.IsSuccessStatusCode)
-                    return;
-                else
-                    throw new Exception(await result.Content.ReadAsStringAsync());
-                //200 OK Request successful
-                //400 Bad Request Problem with the request
-                //401 Unauthorized Valid Channel access token is not specified
-                //403 Forbidden Not authorized to use the API.Confirm that your account or plan is authorized to used the API. 
-                //429 Too Many Requests Exceeded the rate limit for API calls
-                //500 Internal Server Error Error on the internal server
-            }
+            var result = await client.GetAsync(string.Format(leaveEndpoint, id));
+            if (result.IsSuccessStatusCode)
+                return;
+            else
+                throw new Exception(await result.Content.ReadAsStringAsync());
+            //200 OK Request successful
+            //400 Bad Request Problem with the request
+            //401 Unauthorized Valid Channel access token is not specified
+            //403 Forbidden Not authorized to use the API.Confirm that your account or plan is authorized to used the API. 
+            //429 Too Many Requests Exceeded the rate limit for API calls
+            //500 Internal Server Error Error on the internal server
         }
 
         /// <summary>
@@ -235,16 +208,13 @@ namespace LineMessagingAPISDK
         /// <returns></returns>
         public async Task<Profile> GetGroupMemberProfile(string groupId, string memberId)
         {
-            using (HttpClient client = GetClient())
+            var result = await client.GetAsync(string.Format(groupMemberProfileEndpoint, groupId, memberId));
+            if (!result.IsSuccessStatusCode)
+                return null;
+            else
             {
-                var result = await client.GetAsync(string.Format(groupMemberProfileEndpoint, groupId, memberId));
-                if (!result.IsSuccessStatusCode)
-                    return null;
-                else
-                {
-                    Profile profile = JsonConvert.DeserializeObject<Profile>(await result.Content.ReadAsStringAsync());
-                    return profile;
-                }                
+                Profile profile = JsonConvert.DeserializeObject<Profile>(await result.Content.ReadAsStringAsync());
+                return profile;
             }
         }
 
@@ -257,16 +227,13 @@ namespace LineMessagingAPISDK
         /// <returns></returns>
         public async Task<Profile> GetRoomMemberProfile(string roomId, string memberId)
         {
-            using (HttpClient client = GetClient())
+            var result = await client.GetAsync(string.Format(roomMemberProfileEndpoint, roomId, memberId));
+            if (!result.IsSuccessStatusCode)
+                return null;
+            else
             {
-                var result = await client.GetAsync(string.Format(roomMemberProfileEndpoint, roomId, memberId));
-                if (!result.IsSuccessStatusCode)
-                    return null;
-                else
-                {
-                    Profile profile = JsonConvert.DeserializeObject<Profile>(await result.Content.ReadAsStringAsync());
-                    return profile;
-                }
+                Profile profile = JsonConvert.DeserializeObject<Profile>(await result.Content.ReadAsStringAsync());
+                return profile;
             }
         }
 
@@ -280,16 +247,13 @@ namespace LineMessagingAPISDK
         /// <returns></returns>
         public async Task<MemberIdsResponse> GetGroupMemberIds(string groupId, string start = "")
         {
-            using (HttpClient client = GetClient())
+            var result = await client.GetAsync(string.Format(groupMemberIdsEndpoint, groupId, start));
+            if (!result.IsSuccessStatusCode)
+                return null;
+            else
             {
-                var result = await client.GetAsync(string.Format(groupMemberIdsEndpoint, groupId, start));
-                if (!result.IsSuccessStatusCode)
-                    return null;
-                else
-                {
-                    var groupMembersResponse = JsonConvert.DeserializeObject<MemberIdsResponse>(await result.Content.ReadAsStringAsync());
-                    return groupMembersResponse;
-                }
+                var groupMembersResponse = JsonConvert.DeserializeObject<MemberIdsResponse>(await result.Content.ReadAsStringAsync());
+                return groupMembersResponse;
             }
         }
 
@@ -303,16 +267,13 @@ namespace LineMessagingAPISDK
         /// <returns></returns>
         public async Task<MemberIdsResponse> GetRoomMemberIds(string roomId, string start = "")
         {
-            using (HttpClient client = GetClient())
+            var result = await client.GetAsync(string.Format(roomMemberIdsEndpoint, roomId, start));
+            if (!result.IsSuccessStatusCode)
+                return null;
+            else
             {
-                var result = await client.GetAsync(string.Format(roomMemberIdsEndpoint, roomId, start));
-                if (!result.IsSuccessStatusCode)
-                    return null;
-                else
-                {
-                    var groupMembersResponse = JsonConvert.DeserializeObject<MemberIdsResponse>(await result.Content.ReadAsStringAsync());
-                    return groupMembersResponse;
-                }
+                var groupMembersResponse = JsonConvert.DeserializeObject<MemberIdsResponse>(await result.Content.ReadAsStringAsync());
+                return groupMembersResponse;
             }
         }
 
@@ -324,16 +285,13 @@ namespace LineMessagingAPISDK
         /// <returns></returns>
         public async Task<RichMenu> GetRichMenu(string richMenuId)
         {
-            using (HttpClient client = GetClient())
+            var result = await client.GetAsync(richMenuEndpoint + $"/{richMenuId}");
+            if (!result.IsSuccessStatusCode)
+                return null;
+            else
             {
-                var result = await client.GetAsync(richMenuEndpoint + $"/{richMenuId}");
-                if (!result.IsSuccessStatusCode)
-                    return null;
-                else
-                {
-                    var richMenu = JsonConvert.DeserializeObject<RichMenu>(await result.Content.ReadAsStringAsync());
-                    return richMenu;
-                }
+                var richMenu = JsonConvert.DeserializeObject<RichMenu>(await result.Content.ReadAsStringAsync());
+                return richMenu;
             }
         }
 
@@ -346,31 +304,22 @@ namespace LineMessagingAPISDK
         /// <returns>richMenuId</returns>
         public async Task<string> CreateRichMenu(RichMenu richMenu)
         {
-            using (HttpClient client = GetClient())
-            {
-                JsonSerializerSettings settings = new JsonSerializerSettings()
-                {
-                    ContractResolver = new CamelCasePropertyNamesContractResolver(),
-                    NullValueHandling = NullValueHandling.Ignore
-                };
+            
 
-                settings.Converters.Add(new StringEnumConverter(true));
-
-                StringContent content = new StringContent(
-                    JsonConvert.SerializeObject(richMenu, settings),
-                    Encoding.UTF8, "application/json");
-                var result = await client.PostAsync(richMenuEndpoint, content);
-                if (result.IsSuccessStatusCode)
-                    return JObject.Parse(await result.Content.ReadAsStringAsync())["richMenuId"].ToString();
-                else
-                    throw new Exception(await result.Content.ReadAsStringAsync());
-                //200 OK Request successful
-                //400 Bad Request Problem with the request
-                //401 Unauthorized Valid Channel access token is not specified
-                //403 Forbidden Not authorized to use the API.Confirm that your account or plan is authorized to used the API. 
-                //429 Too Many Requests Exceeded the rate limit for API calls
-                //500 Internal Server Error Error on the internal server
-            }
+            StringContent content = new StringContent(
+                JsonConvert.SerializeObject(richMenu, settings),
+                Encoding.UTF8, "application/json");
+            var result = await client.PostAsync(richMenuEndpoint, content);
+            if (result.IsSuccessStatusCode)
+                return JObject.Parse(await result.Content.ReadAsStringAsync())["richMenuId"].ToString();
+            else
+                throw new Exception(await result.Content.ReadAsStringAsync());
+            //200 OK Request successful
+            //400 Bad Request Problem with the request
+            //401 Unauthorized Valid Channel access token is not specified
+            //403 Forbidden Not authorized to use the API.Confirm that your account or plan is authorized to used the API. 
+            //429 Too Many Requests Exceeded the rate limit for API calls
+            //500 Internal Server Error Error on the internal server
         }
 
         /// <summary>
@@ -381,20 +330,17 @@ namespace LineMessagingAPISDK
         /// <returns></returns>
         public async Task DeleteRichMenu(string richMenuId)
         {
-            using (HttpClient client = GetClient())
-            {
-                var result = await client.DeleteAsync(richMenuEndpoint + $"/{richMenuId}");
-                if (result.IsSuccessStatusCode)
-                    return;
-                else
-                    throw new Exception(await result.Content.ReadAsStringAsync());
-                //200 OK Request successful
-                //400 Bad Request Problem with the request
-                //401 Unauthorized Valid Channel access token is not specified
-                //403 Forbidden Not authorized to use the API.Confirm that your account or plan is authorized to used the API. 
-                //429 Too Many Requests Exceeded the rate limit for API calls
-                //500 Internal Server Error Error on the internal server
-            }
+            var result = await client.DeleteAsync(richMenuEndpoint + $"/{richMenuId}");
+            if (result.IsSuccessStatusCode)
+                return;
+            else
+                throw new Exception(await result.Content.ReadAsStringAsync());
+            //200 OK Request successful
+            //400 Bad Request Problem with the request
+            //401 Unauthorized Valid Channel access token is not specified
+            //403 Forbidden Not authorized to use the API.Confirm that your account or plan is authorized to used the API. 
+            //429 Too Many Requests Exceeded the rate limit for API calls
+            //500 Internal Server Error Error on the internal server
         }
 
         /// <summary>
@@ -405,16 +351,13 @@ namespace LineMessagingAPISDK
         /// <returns></returns>
         public async Task<string> GetRichMenuIdForUser(string userId)
         {
-            using (HttpClient client = GetClient())
+            var result = await client.GetAsync(string.Format(richMenuIdForUserEndpoint, userId));
+            if (!result.IsSuccessStatusCode)
+                return null;
+            else
             {
-                var result = await client.GetAsync(string.Format(richMenuIdForUserEndpoint, userId));
-                if (!result.IsSuccessStatusCode)
-                    return null;
-                else
-                {
-                    var richMenu = JsonConvert.DeserializeObject<RichMenu>(await result.Content.ReadAsStringAsync());
-                    return richMenu.RichMenuId;
-                }
+                var richMenu = JsonConvert.DeserializeObject<RichMenu>(await result.Content.ReadAsStringAsync());
+                return richMenu.RichMenuId;
             }
         }
 
@@ -428,20 +371,17 @@ namespace LineMessagingAPISDK
         /// <returns></returns>
         public async Task LinkRichMenuToUser(string userId, string richMenuId)
         {
-            using (HttpClient client = GetClient())
-            {
-                var result = await client.PostAsync(string.Format(richMenuIdForUserEndpoint, userId) + $"/{richMenuId}", null);
-                if (result.IsSuccessStatusCode)
-                    return;
-                else
-                    throw new Exception(await result.Content.ReadAsStringAsync());
-                //200 OK Request successful
-                //400 Bad Request Problem with the request
-                //401 Unauthorized Valid Channel access token is not specified
-                //403 Forbidden Not authorized to use the API.Confirm that your account or plan is authorized to used the API. 
-                //429 Too Many Requests Exceeded the rate limit for API calls
-                //500 Internal Server Error Error on the internal server
-            }
+            var result = await client.PostAsync(string.Format(richMenuIdForUserEndpoint, userId) + $"/{richMenuId}", null);
+            if (result.IsSuccessStatusCode)
+                return;
+            else
+                throw new Exception(await result.Content.ReadAsStringAsync());
+            //200 OK Request successful
+            //400 Bad Request Problem with the request
+            //401 Unauthorized Valid Channel access token is not specified
+            //403 Forbidden Not authorized to use the API.Confirm that your account or plan is authorized to used the API. 
+            //429 Too Many Requests Exceeded the rate limit for API calls
+            //500 Internal Server Error Error on the internal server
         }
 
         /// <summary>
@@ -452,20 +392,17 @@ namespace LineMessagingAPISDK
         /// <returns></returns>
         public async Task UnlinkRichMenuToUser(string userId)
         {
-            using (HttpClient client = GetClient())
-            {
-                var result = await client.DeleteAsync(string.Format(richMenuIdForUserEndpoint, userId));
-                if (result.IsSuccessStatusCode)
-                    return;
-                else
-                    throw new Exception(await result.Content.ReadAsStringAsync());
-                //200 OK Request successful
-                //400 Bad Request Problem with the request
-                //401 Unauthorized Valid Channel access token is not specified
-                //403 Forbidden Not authorized to use the API.Confirm that your account or plan is authorized to used the API. 
-                //429 Too Many Requests Exceeded the rate limit for API calls
-                //500 Internal Server Error Error on the internal server
-            }
+            var result = await client.DeleteAsync(string.Format(richMenuIdForUserEndpoint, userId));
+            if (result.IsSuccessStatusCode)
+                return;
+            else
+                throw new Exception(await result.Content.ReadAsStringAsync());
+            //200 OK Request successful
+            //400 Bad Request Problem with the request
+            //401 Unauthorized Valid Channel access token is not specified
+            //403 Forbidden Not authorized to use the API.Confirm that your account or plan is authorized to used the API. 
+            //429 Too Many Requests Exceeded the rate limit for API calls
+            //500 Internal Server Error Error on the internal server
         }
 
         /// <summary>
@@ -476,21 +413,18 @@ namespace LineMessagingAPISDK
         /// <returns></returns>
         public async Task<Media> GetRichMenuImage(string richMenuId)
         {
-            using (HttpClient client = GetClient())
-            {
-                var result = await client.DeleteAsync(string.Format(richMenuImageEndpoint, richMenuId));
-                if (!result.IsSuccessStatusCode)
-                    return null;
+            var result = await client.DeleteAsync(string.Format(richMenuImageEndpoint, richMenuId));
+            if (!result.IsSuccessStatusCode)
+                return null;
 
-                return new Media()
-                {
-                    Content = await result.Content.ReadAsStreamAsync(),
-                    ContentType = result.Content.Headers.ContentType.MediaType,
-                    FileName = result.Content.Headers.ContentDisposition != null ?
-                        result.Content.Headers.ContentDisposition.FileName.Replace("\"", "") :
-                        Guid.NewGuid().ToString()
-                };
-            }
+            return new Media()
+            {
+                Content = await result.Content.ReadAsStreamAsync(),
+                ContentType = result.Content.Headers.ContentType.MediaType,
+                FileName = result.Content.Headers.ContentDisposition != null ?
+                    result.Content.Headers.ContentDisposition.FileName.Replace("\"", "") :
+                    Guid.NewGuid().ToString()
+            };
         }
 
         /// <summary>
@@ -504,23 +438,20 @@ namespace LineMessagingAPISDK
         /// <returns></returns>
         public async Task UploadRichMenuImage(string richMenuId, Stream image)
         {
-            using (HttpClient client = GetClient())
-            {
-                //client.DefaultRequestHeaders.TryAddWithoutValidation("Content-Type", "image/png");
-                var streamContent = new StreamContent(image);
-                streamContent.Headers.ContentType = new MediaTypeHeaderValue("image/png");
-                var result = await client.PostAsync(string.Format(richMenuImageEndpoint, richMenuId), streamContent);
-                if (result.IsSuccessStatusCode)
-                    return;
-                else
-                    throw new Exception(await result.Content.ReadAsStringAsync());
-                //200 OK Request successful
-                //400 Bad Request Problem with the request
-                //401 Unauthorized Valid Channel access token is not specified
-                //403 Forbidden Not authorized to use the API.Confirm that your account or plan is authorized to used the API. 
-                //429 Too Many Requests Exceeded the rate limit for API calls
-                //500 Internal Server Error Error on the internal server
-            }
+            //client.DefaultRequestHeaders.TryAddWithoutValidation("Content-Type", "image/png");
+            var streamContent = new StreamContent(image);
+            streamContent.Headers.ContentType = new MediaTypeHeaderValue("image/png");
+            var result = await client.PostAsync(string.Format(richMenuImageEndpoint, richMenuId), streamContent);
+            if (result.IsSuccessStatusCode)
+                return;
+            else
+                throw new Exception(await result.Content.ReadAsStringAsync());
+            //200 OK Request successful
+            //400 Bad Request Problem with the request
+            //401 Unauthorized Valid Channel access token is not specified
+            //403 Forbidden Not authorized to use the API.Confirm that your account or plan is authorized to used the API. 
+            //429 Too Many Requests Exceeded the rate limit for API calls
+            //500 Internal Server Error Error on the internal server
         }
 
         /// <summary>
@@ -530,27 +461,16 @@ namespace LineMessagingAPISDK
         /// <returns>JArray which contains RichMenu data as JSON</returns>
         public async Task<JArray> GetRichMenuList()
         {
-            using (HttpClient client = GetClient())
+            var result = await client.GetAsync(richMenuEndpoint + "/list");
+            if (!result.IsSuccessStatusCode)
+                return null;
+            else
             {
-                var result = await client.GetAsync(richMenuEndpoint + "/list");
-                if (!result.IsSuccessStatusCode)
-                    return null;
-                else
-                {
-                    // Action has several types and it inherits from abstract class, thus it is not possible to simply deserialize into RichMenu.
-                    // If you want to deserize it into actual type, please do so by yourself from the returned result and i keep this as JArray for now.
-                    var richMenus = (JToken.Parse(await result.Content.ReadAsStringAsync())["richmenus"]) as JArray;
-                    return richMenus;
-                }
+                // Action has several types and it inherits from abstract class, thus it is not possible to simply deserialize into RichMenu.
+                // If you want to deserize it into actual type, please do so by yourself from the returned result and i keep this as JArray for now.
+                var richMenus = (JToken.Parse(await result.Content.ReadAsStringAsync())["richmenus"]) as JArray;
+                return richMenus;
             }
-        }
-
-        private HttpClient GetClient()
-        {
-            HttpClient client = new HttpClient();
-            client.DefaultRequestHeaders.Authorization = new AuthenticationHeaderValue("Bearer", AccessToken);
-
-            return client;
         }
     }
 }
