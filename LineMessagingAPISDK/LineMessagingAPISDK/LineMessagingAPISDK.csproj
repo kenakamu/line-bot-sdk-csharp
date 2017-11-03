@@ -69,7 +69,6 @@
     <Compile Include="Models\ReplyMessage.cs" />
     <Compile Include="Models\RichMenuArea.cs" />
     <Compile Include="Models\RichMenuBounds.cs" />
-    <Compile Include="Models\RichMenuSizeHeight.cs" />
     <Compile Include="Models\RichMenuSize.cs" />
     <Compile Include="Models\Source.cs" />
     <Compile Include="Models\SourceType.cs" />

@@ -343,8 +343,8 @@ namespace LineMessagingAPISDK
         /// Note: You must upload a rich menu image and link the rich menu to a user for the rich menu to be displayed.You can create up to 10 rich menus for one bot.
         /// </summary>
         /// <param name="richMenu">RichMenu object</param>
-        /// <returns></returns>
-        public async Task CreateRechMenu(RichMenu richMenu)
+        /// <returns>richMenuId</returns>
+        public async Task<string> CreateRichMenu(RichMenu richMenu)
         {
             using (HttpClient client = GetClient())
             {
@@ -361,7 +361,7 @@ namespace LineMessagingAPISDK
                     Encoding.UTF8, "application/json");
                 var result = await client.PostAsync(richMenuEndpoint, content);
                 if (result.IsSuccessStatusCode)
-                    return;
+                    return JObject.Parse(await result.Content.ReadAsStringAsync())["richMenuId"].ToString();
                 else
                     throw new Exception(await result.Content.ReadAsStringAsync());
                 //200 OK Request successful
@@ -506,7 +506,10 @@ namespace LineMessagingAPISDK
         {
             using (HttpClient client = GetClient())
             {
-                var result = await client.PostAsync(string.Format(richMenuImageEndpoint, richMenuId), new StreamContent(image));
+                //client.DefaultRequestHeaders.TryAddWithoutValidation("Content-Type", "image/png");
+                var streamContent = new StreamContent(image);
+                streamContent.Headers.ContentType = new MediaTypeHeaderValue("image/png");
+                var result = await client.PostAsync(string.Format(richMenuImageEndpoint, richMenuId), streamContent);
                 if (result.IsSuccessStatusCode)
                     return;
                 else
@@ -524,8 +527,8 @@ namespace LineMessagingAPISDK
         /// Gets a list of all uploaded rich menus.
         /// https://developers.line.me/en/docs/messaging-api/reference/#get-rich-menu-list
         /// </summary>
-        /// <returns></returns>
-        public async Task<List<RichMenu>> GetRichMenuList()
+        /// <returns>JArray which contains RichMenu data as JSON</returns>
+        public async Task<JArray> GetRichMenuList()
         {
             using (HttpClient client = GetClient())
             {
@@ -534,7 +537,9 @@ namespace LineMessagingAPISDK
                     return null;
                 else
                 {
-                    var richMenus = JsonConvert.DeserializeObject<List<RichMenu>>(((JToken.Parse(await result.Content.ReadAsStringAsync())["richmenus"]) as JArray).ToString());
+                    // Action has several types and it inherits from abstract class, thus it is not possible to simply deserialize into RichMenu.
+                    // If you want to deserize it into actual type, please do so by yourself from the returned result and i keep this as JArray for now.
+                    var richMenus = (JToken.Parse(await result.Content.ReadAsStringAsync())["richmenus"]) as JArray;
                     return richMenus;
                 }
             }

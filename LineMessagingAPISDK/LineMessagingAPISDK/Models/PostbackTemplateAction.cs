@@ -35,7 +35,7 @@ namespace LineMessagingAPISDK.Models
             set { text = value?.Length > 300 ? value.Substring(0, 300) : value; }
         }
 
-        public PostbackTemplateAction(string label, string data, string text)
+        public PostbackTemplateAction(string data, string label = "", string text = "")
         {
             Type = TemplateActionType.Postback;
             this.Label = label;

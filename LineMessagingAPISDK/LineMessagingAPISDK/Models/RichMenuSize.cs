@@ -15,9 +15,9 @@ namespace LineMessagingAPISDK.Models
         /// Height of the rich menu. Possible values: 1686, 843.
         /// </summary>
         [JsonProperty("height")]
-        public RichMenuSizeHeight Height { get; set; }
+        public int Height { get; set; }
 
-        public RichMenuSize(RichMenuSizeHeight height)
+        public RichMenuSize(int height)
         {            
             this.Height = height;
         }

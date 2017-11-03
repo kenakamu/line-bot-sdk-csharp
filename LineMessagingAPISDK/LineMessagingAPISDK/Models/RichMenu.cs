@@ -42,7 +42,7 @@ namespace LineMessagingAPISDK.Models
         /// <summary>
         /// Array of area objects which define the coordinates and size of tappable areas. Maximum of 20 area objects.
         /// </summary>
-        [JsonProperty("area")]
-        public List<RichMenuArea> Area { get; set; }
+        [JsonProperty("areas")]
+        public List<RichMenuArea> Areas { get; set; }
     }
 }
