@@ -12,13 +12,14 @@ Japanese: https://devdocs.line.me/ja/
 This repository contains several projects.
 
 ## LineMessagingAPISDK 
-This project is source of C# library for Line Messaging API. You can install via NuGet, or use Visual Studio 2015 template.
+This project is source of C# library for Line Messaging API. You can install via NuGet, or use Visual Studio 2015/2017 template.
+https://www.nuget.org/packages/LineMessagingAPI.CSharp/
 
 ## LineBotApplication 
-This project is source of Visual Studio 2015 Project Template. You can download template zip from [release](https://github.com/kenakamu/line-bot-sdk-csharp/releases/tag/LineBotApplication)
+This project is source of Visual Studio 2015/2017 Project Template. You can download template zip from [release](https://github.com/kenakamu/line-bot-sdk-csharp/releases/tag/LineBotApplicationv1.5)
 
 ## LineWithBotFrameworkApplication 
-This project is sour ceof Visual Studio 2015 Project Template which connect Line Web Messaging API to Microsoft Bot Framework via DirectLine. You can download template zip from [release](https://github.com/kenakamu/line-bot-sdk-csharp/releases/tag/LineWithBotFrameworkApplication)
+This project is sour ceof Visual Studio 2015/2017 Project Template which connect Line Web Messaging API to Microsoft Bot Framework via DirectLine. You can download template zip from [release](https://github.com/kenakamu/line-bot-sdk-csharp/releases/tag/LineWithBotFrameworkApplicationv1.3)
 
 # License
 MIT license.
