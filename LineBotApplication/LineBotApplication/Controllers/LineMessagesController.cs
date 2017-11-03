@@ -121,8 +121,18 @@ namespace $safeprojectname$.Controllers
 
         public async Task HandlePostbackEvent()
         {
-            var replyMessage = new TextMessage(lineEvent.Postback.Data);
-            await Reply(replyMessage);
+            string reply;
+            // Handle DateTimePicker postback
+            if (lineEvent.Postback?.Params != null)
+            {
+                var dateTime = lineEvent.Postback?.Params;
+                reply = $"DateTime: {dateTime.DateTime}, Date: {dateTime.Date}, Time: {dateTime.Time}";
+            }
+            else
+            {
+                reply = lineEvent.Postback.Data;
+            }
+            await Reply(new TextMessage(reply));
         }
 
         public async Task HandleUnfollowEvent()
@@ -159,13 +169,37 @@ namespace $safeprojectname$.Controllers
             else if (textMessage.Text.ToLower() == "carousel")
             {
                 List<TemplateColumn> columns = new List<TemplateColumn>();
-                List<TemplateAction> actions = new List<TemplateAction>();
-                actions.Add(new MessageTemplateAction("Message Label", "sample data"));
-                actions.Add(new PostbackTemplateAction("Postback Label", "sample data", "sample data"));
-                actions.Add(new UriTemplateAction("Uri Label", "https://github.com/kenakamu"));
-                columns.Add(new TemplateColumn() { Title = "Casousel 1 Title", Text = "Casousel 1 Text", ThumbnailImageUrl = "https://github.com/apple-touch-icon.png", Actions = actions });
-                columns.Add(new TemplateColumn() { Title = "Casousel 2 Title", Text = "Casousel 2 Text", ThumbnailImageUrl = "https://github.com/apple-touch-icon.png", Actions = actions });
+                List<TemplateAction> actions1 = new List<TemplateAction>();
+                List<TemplateAction> actions2 = new List<TemplateAction>();
+
+                // Add actions.
+                actions1.Add(new MessageTemplateAction("Message Label", "sample data"));
+                actions1.Add(new PostbackTemplateAction("Postback Label", "sample data", "sample data"));
+                actions1.Add(new UriTemplateAction("Uri Label", "https://github.com/kenakamu"));
+
+                // Add datetime picker actions
+                actions2.Add(new DatetimePickerTemplateAction("DateTime Picker", "DateTime", DatetimePickerMode.Datetime, "2017-07-21T13:00"));
+                actions2.Add(new DatetimePickerTemplateAction("Date Picker", "Date", DatetimePickerMode.Date, "2017-07-21"));
+                actions2.Add(new DatetimePickerTemplateAction("Time Picker", "Time", DatetimePickerMode.Time, "13:00"));
+
+                columns.Add(new TemplateColumn() { Title = "Casousel 1 Title", Text = "Casousel 1 Text", ThumbnailImageUrl = "https://github.com/apple-touch-icon.png", Actions = actions1 });
+                columns.Add(new TemplateColumn() { Title = "Casousel 2 Title", Text = "Casousel 2 Text", ThumbnailImageUrl = "https://github.com/apple-touch-icon.png", Actions = actions2 });
                 CarouselTemplate carouselTemplate = new CarouselTemplate(columns);
+                replyMessage = new TemplateMessage("Carousel", carouselTemplate);
+            }
+            else if (textMessage.Text.ToLower() == "imagecarousel")
+            {
+                List<ImageColumn> columns = new List<ImageColumn>();
+                UriTemplateAction action = new UriTemplateAction("Uri Label", "https://github.com/kenakamu");
+
+                columns.Add(new ImageColumn("https://github.com/apple-touch-icon.png", action));
+                columns.Add(new ImageColumn("https://github.com/apple-touch-icon.png", action));
+                columns.Add(new ImageColumn("https://github.com/apple-touch-icon.png", action));
+                columns.Add(new ImageColumn("https://github.com/apple-touch-icon.png", action));
+                columns.Add(new ImageColumn("https://github.com/apple-touch-icon.png", action));
+
+                ImageCarouselTemplate carouselTemplate = new ImageCarouselTemplate(columns);
+
                 replyMessage = new TemplateMessage("Carousel", carouselTemplate);
             }
             else if (textMessage.Text.ToLower() == "imagemap")
@@ -176,6 +210,50 @@ namespace $safeprojectname$.Controllers
                 actions.Add(new UriImageMapAction("http://github.com", new ImageMapArea(0, 0, 520, 1040)));
                 actions.Add(new MessageImageMapAction("I love LINE!", new ImageMapArea(520, 0, 520, 1040)));
                 replyMessage = new ImageMapMessage(imageUrl, "GitHub", new BaseSize(1040, 1040), actions);
+            }
+            else if (textMessage.Text.ToLower() == "addrichmenu")
+            {
+                // Create Rich Menu
+                RichMenu richMenu = new RichMenu()
+                {
+                    Size = new RichMenuSize(1686),
+                    Selected = false,
+                    Name = "nice richmenu",
+                    ChatBarText = "touch me",
+                    Areas = new List<RichMenuArea>()
+                        {
+                            new RichMenuArea()
+                            {
+                                Action = new PostbackTemplateAction("action=buy&itemid=123"),
+                                Bounds = new RichMenuBounds(0, 0, 2500, 1686)
+                            }
+                        }
+                };
+
+
+                var richMenuId = await lineClient.CreateRichMenu(richMenu);
+                var image = new MemoryStream(File.ReadAllBytes(HttpContext.Current.Server.MapPath(@"~\Images\richmenu.PNG")));
+                // Upload Image
+                await lineClient.UploadRichMenuImage(richMenuId, image);
+                // Link to user
+                await lineClient.LinkRichMenuToUser(lineEvent.Source.UserId, richMenuId);
+            }
+            else if (textMessage.Text.ToLower() == "deleterichmenu")
+            {
+                // Get Rich Menu for the user
+                var richMenuId = await lineClient.GetRichMenuIdForUser(lineEvent.Source.UserId);
+
+                await lineClient.UnlinkRichMenuToUser(lineEvent.Source.UserId);
+                await lineClient.DeleteRichMenu(richMenuId);
+            }
+            else if (textMessage.Text.ToLower() == "deleteallrichmenu")
+            {
+                // Get Rich Menu for the user
+                var richMenuList = await lineClient.GetRichMenuList();
+                foreach (var richMenu in richMenuList)
+                {
+                    await lineClient.DeleteRichMenu(richMenu["richMenuId"].ToString());
+                }
             }
             else
             {
