@@ -12,7 +12,7 @@ Japanese: https://devdocs.line.me/ja/
 This repository contains several projects.
 
 ## LineMessagingAPISDK 
-This project is source of C# library for Line Messaging API. You can install via NuGet, or use Visual Studio 2015/2017 template.
+This project is source of C# .NET Standard 2.0 library for Line Messaging API. You can install via NuGet, or use Visual Studio 2015/2017 template.
 https://www.nuget.org/packages/LineMessagingAPI.CSharp/
 
 ## LineBotApplication 
